@@ -17,8 +17,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000 // 24 часа
+        secure: false,  // Измените на false
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
     }
 }));
 
@@ -80,23 +81,24 @@ app.post('/admin/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         
-        console.log('Попытка входа:', username);
+        console.log('=== ОТЛАДКА ВХОДА ===');
+        console.log('Username:', username);
+        console.log('Password:', password);
+        console.log('Body:', req.body);
         
-        // Проверяем существование пользователя
-        if (!admins[username]) {
-            console.log('Пользователь не найден');
-            return res.redirect('/admin/login?error=1');
-        }
-        
-        // Проверяем пароль
-        const isValidPassword = await bcrypt.compare(password, admins[username]);
-        
-        if (isValidPassword) {
+        // Временно: простая проверка без bcrypt
+        if (username === 'admin' && password === 'admin123') {
             req.session.admin = username;
-            console.log('Успешный вход:', username);
-            res.redirect('/admin');
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Ошибка сохранения сессии:', err);
+                    return res.redirect('/admin/login?error=1');
+                }
+                console.log('Сессия сохранена, редирект на /admin');
+                res.redirect('/admin');
+            });
         } else {
-            console.log('Неверный пароль');
+            console.log('Неверные данные входа');
             res.redirect('/admin/login?error=1');
         }
     } catch (error) {
