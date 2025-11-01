@@ -125,7 +125,7 @@ app.get('/admin/logout', (req, res) => {
 // ==================== API АДМИНКИ ====================
 
 // Получить все продукты (для админки)
-app.get('/api/admin/products', requireAuth, (req, res) => {
+app.get('/api/admin/products', (req, res) => {
     res.json(products);
 });
 
