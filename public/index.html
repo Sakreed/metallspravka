@@ -17,5 +17,24 @@
 <body>
     <h1>Металлсправка</h1>
     <p>Справочник металлопроката - сайт в разработке</p>
+                    <tbody id="productsTable">
+                    <!-- Заполняется через JavaScript -->
+                    </tbody>
+        <script>
+            async function loadProducts() {
+            const response = await fetch('/api/admin/products');
+            const products = await response.json();
+            
+            const tbody = document.getElementById('productsTable');
+            tbody.innerHTML = products.map(product => `
+                <tr>
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>${product.price}</td>
+                    <td>${product.unit}</td>
+                </tr>
+            `).join('');
+        }
+        </script>
 </body>
 </html>
