@@ -17,9 +17,9 @@
 <body>
     <h1>Металлсправка</h1>
     <p>Справочник металлопроката - сайт в разработке</p>
-                    <tbody id="productsTable">
-                    <!-- Заполняется через JavaScript -->
-                    </tbody>
+        <tbody id="productsTable">
+            <!-- Заполняется через JavaScript -->
+        </tbody>
         <script>
             async function loadProducts() {
             const response = await fetch('/api/admin/products');
@@ -35,6 +35,7 @@
                 </tr>
             `).join('');
         }
+        loadProducts()
         </script>
 </body>
 </html>
